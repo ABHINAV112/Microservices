@@ -4,9 +4,14 @@ require("dotenv").config();
 console.log(process.env);
 
 // SCHEMA validation
-// Type of validation
+// Type of auth
 // Database connector
 // userID from auth token - name for the JSON request
+
+// handle auth details from the config file
+
+// OVERALL GOAL:
+// Don't have to edit the current code at all just have to edit config files
 
 const config = require("./config/services.json");
 
