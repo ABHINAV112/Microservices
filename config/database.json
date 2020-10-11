@@ -1,0 +1,3 @@
+{
+  "SQL_DATABASE_URI": "postgres://abhinav:pass@localhost:5432/microservice"
+}

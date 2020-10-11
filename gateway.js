@@ -1,14 +1,7 @@
 const express = require("express");
 const proxy = require("express-http-proxy");
+const authRouter = require("./auth");
 require("dotenv").config();
-console.log(process.env);
-
-// SCHEMA validation
-// Type of auth
-// Database connector
-// userID from auth token - name for the JSON request
-
-// handle auth details from the config file
 
 // OVERALL GOAL:
 // Don't have to edit the current code at all just have to edit config files
@@ -16,6 +9,7 @@ console.log(process.env);
 const config = require("./config/services.json");
 
 const app = express();
+app.use("/auth", authRouter);
 
 for (let i = 0; i < config.length; i++) {
   app.use(config[i].endpoint, proxy(config[i].url));
