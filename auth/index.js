@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const router = express.Router();
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 15;
+const JWT_SECRET = process.env.JWT_SECRET;
+const jwt = require("jsonwebtoken");
 
 // Testing if sequelize connects succesfully
 sequelize
@@ -24,7 +26,7 @@ router.post("/login", async (req, res) => {
   // password
   try {
     const { identifier, password } = req.body;
-    const user = await User.findAll({ where: { identifier } });
+    const user = await User.findOne({ where: { identifier } });
     console.log(user);
     if (user == null) {
       return res.status(400).send("User identifier not found");
@@ -33,11 +35,18 @@ router.post("/login", async (req, res) => {
     if (!comparisonResult) {
       return res.status(400).send("User password is wrong");
     }
-    return res.send(comparisonResult);
-    // // TODO: finish generating a JWT token
-    // return comparisonResult;
+    const jwtToken = jwt.sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60,
+        data: { identifier },
+      },
+      JWT_SECRET
+    );
+
+    return res.send(jwtToken);
+    // TODO: finish generating a JWT token
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).send("ERROR");
   }
 });
 
