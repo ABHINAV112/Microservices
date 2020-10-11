@@ -2,6 +2,7 @@
   {
     "name": "test",
     "url": "http://localhost:3000",
-    "endpoint": "/test"
+    "endpoint": "/test",
+    "requiresAuthentication":false
   }
 ]

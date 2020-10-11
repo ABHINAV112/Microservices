@@ -12,12 +12,13 @@ const config = require("./config/services.json");
 const app = express();
 app.use("/auth", authRouter);
 
-// for (let i = 0; i < config.length; i++) {
-//   app.use(config[i].endpoint, proxy(config[i].url));
-// }
-app.use(authenticate);
-app.get("/test", (req, res) => {
-  return res.send("authorized");
-});
+for (let i = 0; i < config.length; i++) {
+  const currentRouter = express.Router();
+  if (config[i].requiresAuthentication) {
+    currentRouter.use(authenticate);
+  }
+  currentRouter.use("/", proxy(config[i].url));
+  app.use(config[i].endpoint, currentRouter);
+}
 
 app.listen(process.env.PORT || 8000);
